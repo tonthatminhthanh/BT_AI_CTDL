@@ -3,6 +3,8 @@
 #include "linkedlist.hpp"
 #include "graph.hpp"
 
+// Luu y: Chuong trinh chi kiem tra neu co duong di tu diem bat dau toi diem ket thuc, chuong trinh khong co dua ra chi tiet cach de toi dich
+
 void dfs(int** graph, int n, char start, char dest)
 {
     Node* open = NULL; //Danh sach lien ket cua cac dinh trong queue cho xu ly
