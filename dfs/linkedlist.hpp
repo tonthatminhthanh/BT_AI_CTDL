@@ -6,7 +6,6 @@ struct Node
 {
     char value;
     Node* next;
-    Node* parent;
 };
 
 void print_list(Node* node) //in danh sach lien ket
