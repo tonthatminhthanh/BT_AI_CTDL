@@ -3,38 +3,36 @@
 #include "linkedlist.hpp"
 #include "graph.hpp"
 
-// Luu y: Chuong trinh chi kiem tra neu co duong di tu diem bat dau toi diem ket thuc, chuong trinh khong co dua ra chi tiet cach de toi dich
-
-void dfs(int** graph, int n, char start, char dest)
+void print_rev(Node* node) //in nguoc lai
 {
-    Node* open = NULL; //Danh sach lien ket cua cac dinh trong queue cho xu ly
-    Node* close = NULL; //Danh sach lien ket cac dinh da duyet
-    Node* path = NULL;
-    add_front(open,start); //Them dinh bat dau vao open
+    if(node->next != NULL)
+        print_rev(node->next);
+    printf("%c",node->value);
+}
 
-    while(open != NULL) //Lap cho den khi danh sach lien ket open trong
+void dfs_path(int** graph, int* visited, char vertex, char dest, int n, Node* &path)
+{
+    int v = vertex - 'A'; //so tuong trung cho dinh hien tai vd: 'B' - 'A' = 1
+    visited[v] = 1;
+
+    if(vertex == dest) //neu dinh dang xet la dinh dich thi them dinh dich vao danh sach path
     {
-         //Lay gia tri cua dinh dang xet
+        add_back(path,dest);
+        printf("Path found: ");
+        return;
+    }
 
-        if(open->value == dest) //Kiem tra dinh dang xet la dinh dich
+    for(int i = 0;i < n;i++)
+    {
+        if(graph[v][i] == 1 && visited[i] != 1)
         {
-            printf("True!\n");
-            print_path(open);
-            return;
-        }
-        char current = pop(open);
-        int vertex = current - 'A'; //Chuyen ky tu dac trung cho dinh thanh so
-
-        for(int i = 0;i < n;i++)
-        {
-            if(graph[vertex][i] == 1 && exists(open,i + 'A') != 1)
+            dfs_path(graph, visited, i + 'A', dest, n, path);
+            if(path != NULL && exists(path,vertex) != 1) //neu da tim duoc duong di thi quay lui va them cac dinh dan toi dinh dich
             {
-                add_front(open,i + 'A');//them cac dinh lang gieng cua dinh dang duoc xu ly vao queue open
+                add_back(path,vertex);
             }
         }
-        add_back(close,current); //them dinh da xet vao danh sach close
     }
-    printf("False!\n");
 }
 
 int main()
@@ -43,13 +41,23 @@ int main()
     printf("Nhap so dinh trong phan tu: ");
     scanf("%d",&n);
     int** graph = CreateGraph(n);
+    int* visited = (int*)malloc(sizeof(int)*n);
+    Node* path = NULL;
+
+    for(int i = 0;i < n;i++)
+    {
+        visited[i] = 0;
+    }
+
     char c_start, c_dest;
     printf("Nhap dinh bat dau (Viet hoa): ");
     scanf("%c",&c_start);
     fflush(stdin);
     printf("Nhap dinh ket thuc (Viet hoa): ");
     scanf("%c",&c_dest);
-    dfs(graph,n,c_start,c_dest);
+    dfs_path(graph,visited,c_start,c_dest,n,path);
+    print_rev(path);
+    printf("\n");
 
     return 0;
 }
