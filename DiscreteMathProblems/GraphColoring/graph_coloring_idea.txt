@@ -1,0 +1,4 @@
+adjacency matrix is created
+create an array (deg) containing the degree of each i verticies
+create an array (sorted_vertices) containing the verticies represented by index (sorted accordingly to the deg array)
+create an array (colors) containing the color of each i verticies
