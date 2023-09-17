@@ -54,6 +54,7 @@ int input_matrix(char file_name[], int &v_count, int** &matrix) //nhap ma tran q
         }
         matrix[i] = row;
     }
+    fclose(file);
     return 0;
 }
 
